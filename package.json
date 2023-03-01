@@ -2,6 +2,7 @@
   "name": "my-new-project",
   "type": "module",
   "devDependencies": {
+    "@types/chai": "^4.3.4",
     "@wdio/allure-reporter": "^8.4.0",
     "@wdio/cli": "^8.4.0",
     "@wdio/cucumber-framework": "^8.4.0",
@@ -14,5 +15,8 @@
   },
   "scripts": {
     "wdio": "wdio run ./wdio.conf.ts"
+  },
+  "dependencies": {
+    "chai": "^4.3.7"
   }
 }
