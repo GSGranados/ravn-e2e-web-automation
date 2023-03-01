@@ -29,5 +29,5 @@ Feature: E2E Web Test Automation - RAVN Code Challenge
         Then Verify that "ACCOUNT DELETED!" message is visible
 
         Examples:
-            | TestID  | FirstName | LastName | Email          | Title | Password | Date             | Company       | Address     | SecondAddress | Country   | State | City         | ZipCode  | MobileNumber |
-            | E2E_001 | Steven    | Granados | email@mail.com | Mr    | 123456   | 02-November-1996 | RAVN Software | Test Addr 1 | Test Addr 2   | Singapore | S.S   | San Salvador | CP 11001 | 77777777     |
+            | TestID  | FirstName | LastName | Email           | Title | Password | Date            | Company       | Address     | SecondAddress | Country   | State | City         | ZipCode  | MobileNumber |
+            | E2E_001 | Steven    | Granados | steven@mail.com | Mr    | 123456   | 2-November-1996 | RAVN Software | Test Addr 1 | Test Addr 2   | Singapore | S.S   | San Salvador | CP 11001 | 77777777     |

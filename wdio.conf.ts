@@ -3,7 +3,6 @@ import type { Options } from '@wdio/types'
 import allure from "@wdio/allure-reporter";
 import fs from "fs";
 export const config: Options.Testrunner = {
-    environment: "RAVN-E2E-Web-Automation",
     runner: 'local',
     autoCompileOpts: {
         tsNodeOpts: {
@@ -24,11 +23,23 @@ export const config: Options.Testrunner = {
     capabilities: [{
         maxInstances: 5,
         browserName: 'chrome',
-        acceptInsecureCerts: true
+        acceptInsecureCerts: true,
+        timeouts: { implicit: 15000, pageLoad: 20000, script: 30000 },
+        "goog:chromeOptions": {
+            args: [
+                "--window-size=1920,1080",
+                "--enable-automation",
+                "--disable-gpu",
+                "disable-infobars",
+                "disable-popup-blocking",
+                "disable-notifications",
+                "--headless"
+            ],
+        },
     }],
     logLevel: 'info',
     bail: 0,
-    baseUrl: 'http://localhost',
+    baseUrl: 'https://automationexercise.com/',
     waitforTimeout: 10000,
     connectionRetryTimeout: 120000,
     connectionRetryCount: 3,
@@ -38,8 +49,11 @@ export const config: Options.Testrunner = {
         ['allure',
             {
                 outputDir: 'reports/allure-results',
-                disableWebdriverScreenshotsReporting: true,
-                useCucumberStepReporter: true
+                disableWebdriverStepsReporting: true,
+                useCucumberStepReporter: true,
+                disableWebdriverScreenshotsReporting: false,
+                disableMochaHooks: true,
+                addConsoleLogs: true,
             }]],
     cucumberOpts: {
         require: ['./tests/features/step-definitions/**/*.ts'],
@@ -74,7 +88,7 @@ export const config: Options.Testrunner = {
     beforeScenario: function (world, context) {
         let worldArr = world.pickle.name.split(/:/);
         //@ts-ignore
-        if (worldArr.length > 0) browser.config.testid = worldArr[0];
+        if (worldArr.length > 0) browser.options.testid = worldArr[0];
         //@ts-ignore
         if (!browser.options.testid)
             throw Error(
@@ -104,8 +118,9 @@ export const config: Options.Testrunner = {
    * @param {GherkinDocument.IFeature} feature  Cucumber feature object
    */
     afterFeature: function (uri, feature) {
-        allure.addEnvironment("Environment:", browser.config.environment);
-
+        allure.addEnvironment("Environment:", "RAVN-E2E-Web-Automation");
+        allure.addEnvironment("ENV URL", browser.options.baseUrl);
+        allure.addEnvironment("Platform", process.platform);
     },
 
 

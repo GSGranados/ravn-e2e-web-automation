@@ -12,6 +12,7 @@ class HomePage extends Page {
     get homepageNavMenu() { return $('.nav.navbar-nav'); }
     get homepageSignupLoginButton() { return $('.nav.navbar-nav li:nth-child(4) a'); }
     get homepageLoginAsUsernameMessage() { return $('.nav.navbar-nav li:nth-child(10) a'); }
+    get homepageLogoutButton() { return $('.nav.navbar-nav li:nth-child(4) a'); }
     get homepageDeleteAccountButton() { return $('.nav.navbar-nav li:nth-child(5) a'); }
 
 
@@ -60,7 +61,7 @@ class HomePage extends Page {
         const reportingMessage = "Logged in as Username text verified";
         try {
             const loggedInUsername = (await (await this.homepageLoginAsUsernameMessage).$('b')).getText();
-            expect((await loggedInUsername).toLowerCase()).to.be.eq(username);
+            expect(await loggedInUsername).to.be.eq(username);
             reporter.addStep(testId, 'info', reportingMessage);
         } catch (error) {
             error.message = `${reportingMessage} - ${error.message}`
@@ -69,10 +70,30 @@ class HomePage extends Page {
         }
     }
 
+    /**
+     * @function clickOnDeleteAccountButton It clicks on the Delete Account Button within the Narbar
+     * @param testId For Allure reporting purposes
+     */
     async clickOnDeleteAccountButton(testId: string): Promise<void> {
         const reportingMessage = "Delete Account button clicked";
         try {
             await this.clickElement(await this.homepageDeleteAccountButton);
+            reporter.addStep(testId, 'info', reportingMessage);
+        } catch (error) {
+            error.message = `${reportingMessage} - ${error.message}`
+            reporter.addStep(testId, 'error', reportingMessage);
+            throw error;
+        }
+    }
+
+    /**
+     * @function clickOnLogoutButton It clicks on the Logout Button within the Navbar
+     * @param testId for Allure reporting purposes
+     */
+    async clickOnLogoutButton(testId: string): Promise<void> {
+        const reportingMessage = "Logout Button clicked";
+        try {
+            await this.clickElement(await this.homepageLogoutButton);
             reporter.addStep(testId, 'info', reportingMessage);
         } catch (error) {
             error.message = `${reportingMessage} - ${error.message}`

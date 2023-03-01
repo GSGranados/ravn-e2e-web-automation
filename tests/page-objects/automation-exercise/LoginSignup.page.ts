@@ -12,6 +12,9 @@ class LoginSingupPage extends Page {
     get signupEmailInputField() { return $('.signup-form input[data-qa="signup-email"]') }
     get signupSubmitButton() { return $('.signup-form button[data-qa="signup-button"]') }
     get loginToAccountMessage() { return $('.login-form h2') }
+    get loginEmailInputField() { return $('.login-form input[data-qa="login-email"]') }
+    get loginPasswordInputField() { return $('.login-form input[data-qa="login-password"]') }
+    get loginSubmitButton() { return $('.login-form button[data-qa="login-button"]') }
 
     /**
      * @function verifyNewUserSignupMessage It makes a Chai assertion to validate the existence of the New User Signup Message
@@ -64,6 +67,21 @@ class LoginSingupPage extends Page {
             throw error
         }
     }
+    /**
+     * @function clickOnSignupSubmitButton It Clicks on the Sign up submit button
+     * @param testId For Allure reporting purposes
+     */
+    async clickOnSignupSubmitButton(testId: string): Promise<void> {
+        const reportingMessage = `Signup Submit Button Clicked`;
+        try {
+            await this.clickElement(await this.signupSubmitButton);
+            reporter.addStep(testId, 'info', reportingMessage);
+        } catch (error) {
+            error.message = `${reportingMessage} - ${error.message}`
+            reporter.addStep(testId, 'error', reportingMessage);
+            throw error
+        }
+    }
 
     /**
      * @function verifyLoginToAccountMessage It makes a Chai assertion to validate the existence of the Login To Account Message
@@ -80,6 +98,57 @@ class LoginSingupPage extends Page {
             throw error
         }
     }
+
+    /**
+     * @function enterLoginEmail Sets the Value in the Login Email input field
+     * @param testId For Allure reporting purposes
+     * @param signupName Login Email to set into the Input
+     */
+    async enterLoginEmail(testId: string, loginEmail: string): Promise<void> {
+        if (!loginEmail) throw Error(`Given Login Email: ${loginEmail} is not valid`);
+        const reportingMessage = `${loginEmail} Set in the input field`;
+        try {
+            await this.typeIntoElement(await this.loginEmailInputField, loginEmail);
+            reporter.addStep(testId, 'info', reportingMessage);
+        } catch (error) {
+            error.message = `${reportingMessage} - ${error.message}`
+            reporter.addStep(testId, 'error', reportingMessage);
+            throw error
+        }
+    }
+    /**
+     * @function enterLoginPassword Sets the Value in the Login Password input field
+     * @param testId For Allure reporting purposes
+     * @param signupName Login Password to set into the Input
+     */
+    async enterLoginPassword(testId: string, loginPassword: string): Promise<void> {
+        if (!loginPassword) throw Error(`Given Login Password: ${loginPassword} is not valid`);
+        const reportingMessage = `${loginPassword} Set in the input field`;
+        try {
+            await this.typeIntoElement(await this.loginPasswordInputField, loginPassword);
+            reporter.addStep(testId, 'info', reportingMessage);
+        } catch (error) {
+            error.message = `${reportingMessage} - ${error.message}`
+            reporter.addStep(testId, 'error', reportingMessage);
+            throw error
+        }
+    }
+    /**
+     * @function clickOnLoginSubmitButton It Clicks on the Login submit button
+     * @param testId For Allure reporting purposes
+     */
+    async clickOnLoginSubmitButton(testId: string): Promise<void> {
+        const reportingMessage = `Login Submit Button Clicked`;
+        try {
+            await this.clickElement(await this.loginSubmitButton);
+            reporter.addStep(testId, 'info', reportingMessage);
+        } catch (error) {
+            error.message = `${reportingMessage} - ${error.message}`
+            reporter.addStep(testId, 'error', reportingMessage);
+            throw error
+        }
+    }
+
 }
 
 export default new LoginSingupPage();

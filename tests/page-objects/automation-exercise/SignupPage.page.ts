@@ -1,5 +1,6 @@
-import reporter from "../../helper/reporter.js";
 import Page from "../Page.js";
+import reporter from "../../helper/reporter.js";
+import { assert, expect } from "chai";
 
 class SignupPage extends Page {
     constructor() {
@@ -7,6 +8,7 @@ class SignupPage extends Page {
     }
 
     //Locator Strategies
+    get signupEnterAccountInformationMessage() { return $('.login-form .title:nth-child(1) b') }
     get signupMrTitleRadio() { return $('.radio-inline label[for="id_gender1"]') }
     get signupMrsTitleRadio() { return $('.radio-inline label[for="id_gender2"]') }
     get signupNameInput() { return $('input#name') }
@@ -23,11 +25,28 @@ class SignupPage extends Page {
     get signupAddressInput() { return $('input#address1') }
     get signupSecondAddressInput() { return $('input#address2') }
     get signupAddressCountrySelect() { return $('select#country') }
-    get signupAddressStateInput() { return $('select#state') }
-    get signupAddressCityInput() { return $('select#city') }
-    get signupAddressZipCodeInput() { return $('select#zipcode') }
-    get signupAddressMobielNumberInput() { return $('select#mobile_number') }
+    get signupAddressStateInput() { return $('input#state') }
+    get signupAddressCityInput() { return $('input#city') }
+    get signupAddressZipCodeInput() { return $('input#zipcode') }
+    get signupAddressMobielNumberInput() { return $('input#mobile_number') }
     get signupCreateAccountButton() { return $('button[data-qa="create-account"]') }
+
+
+    /**
+     * @function verifyEnterAccountInformation It makes a Chai assertion to verify the Existence of the Enter Account information Message
+     * @param testId For Allure Reporting purposes
+     */
+    async verifyEnterAccountInformation(testId: string): Promise<void> {
+        const reportingMessage = "Enter Account Information";
+        try {
+            assert.exists(await this.signupEnterAccountInformationMessage, this.assertionErrorMessage);
+            reporter.addStep(testId, 'info', reportingMessage);
+        } catch (error) {
+            error.message = `${reportingMessage} - ${error.message}`;
+            reporter.addStep(testId, 'error', reportingMessage);
+            throw error;
+        }
+    }
 
     /**
      * @function selectAccountTitle It clicks on one of the two radio buttons to select an Account title
@@ -65,15 +84,16 @@ class SignupPage extends Page {
         }
     }
     /**
-     * @function enterSingupEmail It enters the Sign Up Email to the Sign up input field
+     * @function verifySingupEmail Makes a Chai Assertion to validate the Email Submitted on the Login Form
      * @param testId For Allure reporting purposes
-     * @param signupEmail The Sign up email to be set
+     * @param signupEmail The Sign up email to be validated
      */
-    async enterSingupEmail(testId: string, signupEmail: string): Promise<void> {
+    async verifySingupEmail(testId: string, signupEmail: string): Promise<void> {
         if (!signupEmail) throw Error(`Given Signup Email: ${signupEmail} is not valid`);
-        const reportingMessage = `${signupEmail} Set as Sign up name`;
+        const reportingMessage = `Sign up email: ${signupEmail} Verified`;
         try {
-            await this.typeIntoElement(await this.signupEmailInput, signupEmail);
+            const submittedEmail = await (await this.signupEmailInput).getAttribute("value");
+            expect(submittedEmail).to.be.eq(signupEmail);
             reporter.addStep(testId, 'info', reportingMessage);
         } catch (error) {
             error.message = `${reportingMessage} - ${error.message}`
@@ -161,7 +181,7 @@ class SignupPage extends Page {
         if (!addressFirstName) throw Error(`Given Address First Name ${addressFirstName} is not valid`);
         const reportingMessage = `${addressFirstName} set in the input field`
         try {
-            await this.typeIntoElement(await this.signupAddressLastNameInput, addressFirstName);
+            await this.typeIntoElement(await this.signupAddressFirstNameInput, addressFirstName);
             reporter.addStep(testId, 'info', reportingMessage);
         } catch (error) {
             error.message = `${reportingMessage} - ${error.message}`;
@@ -171,11 +191,11 @@ class SignupPage extends Page {
     }
 
     /**
-     * @function enterSignupAddressLastNameInput It sets the Address Last Name in the input field
+     * @function enterSignupAddressLastName It sets the Address Last Name in the input field
      * @param testId For Allure Reporting purposes
      * @param addressFirstName The Address Last name to set
      */
-    async enterSignupAddressLastNameInput(testId: string, addressLastName: string): Promise<void> {
+    async enterSignupAddressLastName(testId: string, addressLastName: string): Promise<void> {
         if (!addressLastName) throw Error(`Given Address Last Name ${addressLastName} is not valid`);
         const reportingMessage = `${addressLastName} set in the input field`
         try {
@@ -189,11 +209,11 @@ class SignupPage extends Page {
     }
 
     /**
-     * @function enterSignupAddressCompanyInput It sets the Address Company in the input field
+     * @function enterSignupAddressCompany It sets the Address Company in the input field
      * @param testId For Allure Reporting purposes
      * @param addressFirstName The Company name to set
      */
-    async enterSignupAddressCompanyInput(testId: string, addressCompanyName: string): Promise<void> {
+    async enterSignupAddressCompany(testId: string, addressCompanyName: string): Promise<void> {
         if (!addressCompanyName) throw Error(`Given Company Name ${addressCompanyName} is not valid`);
         const reportingMessage = `${addressCompanyName} set in the input field`
         try {
@@ -207,11 +227,11 @@ class SignupPage extends Page {
     }
 
     /**
-     * @function enterSignupAddressCompanyInput It sets the Address Name in the input field
+     * @function enterSignupAddress It sets the Address Name in the input field
      * @param testId For Allure Reporting purposes
      * @param addressFirstName The Address name to set
      */
-    async enterSignupAddressInput(testId: string, addressName: string): Promise<void> {
+    async enterSignupAddress(testId: string, addressName: string): Promise<void> {
         if (!addressName) throw Error(`Given Address Name ${addressName} is not valid`);
         const reportingMessage = `${addressName} set in the input field`
         try {
@@ -225,11 +245,11 @@ class SignupPage extends Page {
     }
 
     /**
-     * @function enterSignupSecondAddressInput It sets the Second Address Name in the input field
+     * @function enterSignupSecondAddress It sets the Second Address Name in the input field
      * @param testId For Allure Reporting purposes
      * @param addressFirstName The Second Address name to set
      */
-    async enterSignupSecondAddressInput(testId: string, secondAddressName: string): Promise<void> {
+    async enterSignupSecondAddress(testId: string, secondAddressName: string): Promise<void> {
         if (!secondAddressName) throw Error(`Given Second Address Name ${secondAddressName} is not valid`);
         const reportingMessage = `${secondAddressName} set in the input field`
         try {

@@ -14,7 +14,8 @@
     "wdio-chromedriver-service": "^8.1.1"
   },
   "scripts": {
-    "wdio": "wdio run ./wdio.conf.ts"
+    "wdio": "wdio run ./wdio.conf.ts",
+    "reports": "allure generate reports/allure-results --clean -o reports/allure-report && allure open reports/allure-report"
   },
   "dependencies": {
     "chai": "^4.3.7"
