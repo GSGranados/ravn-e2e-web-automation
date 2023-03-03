@@ -56,6 +56,14 @@ class Page {
         await webElement.selectByVisibleText(optionText);
     }
 
+    /**
+     * @function refreshBrowserPage It executes the Browser capability method to refresh the page to remove ads, 
+     * unwanted content obstructing the page interactions
+     */
+    async refreshBrowserPage(): Promise<void> {
+        await browser.refresh();
+    }
+
 }
 
 export default Page;

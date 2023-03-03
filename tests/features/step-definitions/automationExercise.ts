@@ -28,7 +28,7 @@ When(/^User Clicks on Signup button$/, async function () {
 
 });
 Then(/^Verify that "ENTER ACCOUNT INFORMATION" is visible$/, async function () {
-    await SignupPage.verifyEnterAccountInformation(this.testid);
+    await SignupPage.verifyEnterAccountInformationMessage(this.testid);
 });
 When(/^User Fills the Required Details: (.*), (.*), (.*), (.*), and (.*) of birth$/, async function (title: string, firstName: string, email: string, password: string, dateBirth: string) {
     await SignupPage.selectAccountTitle(this.testid, title);
@@ -64,6 +64,7 @@ Then(/^Verify that "ACCOUNT CREATED!" is visible$/, async function () {
 
 When(/^Click on Continue button$/, async function () {
     await ConfirmationPage.clickOnContinueButton(this.testid);
+    await ConfirmationPage.verifyHeadlessMode(this.testid);
 });
 
 Then(/^Verify that Logged in as (.*) is visible$/, async function (firstName: string) {
@@ -76,7 +77,7 @@ When(/^Click on Logout button$/, async function () {
 Then(/^Verify "Login to your account" is visible$/, async function () {
     await LoginSignupPage.verifyLoginToAccountMessage(this.testid);
 });
-When(/^Enter correct (.*) address and (.*)$/, async function (email: string, password: string) {
+When(/^User Enters (.*) address and (.*)$/, async function (email: string, password: string) {
     await LoginSignupPage.enterLoginEmail(this.testid, email);
     await LoginSignupPage.enterLoginPassword(this.testid, password);
 });

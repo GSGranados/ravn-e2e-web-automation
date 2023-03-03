@@ -3,6 +3,8 @@
         "moduleResolution": "node",
         "esModuleInterop": true,
         "resolveJsonModule": true,
+        "forceConsistentCasingInFileNames": true,
+        "skipLibCheck": true,
         "module": "ESNext",
         "types": [
             "node",
@@ -10,6 +12,6 @@
             "expect-webdriverio",
             "@wdio/cucumber-framework"
         ],
-        "target": "es2022"
+        "target": "es2022",
     }
 }

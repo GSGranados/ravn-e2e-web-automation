@@ -22,7 +22,7 @@ Feature: E2E Web Test Automation - RAVN Code Challenge
         Then Verify that Logged in as <FirstName> is visible
         When Click on Logout button
         Then Verify "Login to your account" is visible
-        When Enter correct <Email> address and <Password>
+        When User Enters <Email> address and <Password>
         * User Clicks on login button
         Then Verify that Logged in as <FirstName> is visible
         When Click Delete Account button

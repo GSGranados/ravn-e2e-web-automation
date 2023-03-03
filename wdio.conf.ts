@@ -2,6 +2,10 @@
 import type { Options } from '@wdio/types'
 import allure from "@wdio/allure-reporter";
 import fs from "fs";
+import dotenv from "dotenv";
+dotenv.config();
+
+const headlessMode = process.env.HEADLESS_MODE
 export const config: Options.Testrunner = {
     runner: 'local',
     autoCompileOpts: {
@@ -21,19 +25,24 @@ export const config: Options.Testrunner = {
     maxInstances: 10,
 
     capabilities: [{
-        maxInstances: 5,
+        maxInstances: 1,
         browserName: 'chrome',
         acceptInsecureCerts: true,
         timeouts: { implicit: 15000, pageLoad: 20000, script: 30000 },
         "goog:chromeOptions": {
-            args: [
+            args: headlessMode === "TRUE" ? [
                 "--window-size=1920,1080",
                 "--enable-automation",
                 "--disable-gpu",
+                "--no-sandbox",
                 "disable-infobars",
                 "disable-popup-blocking",
                 "disable-notifications",
                 "--headless"
+            ] : [
+                "--window-size=1920,1080",
+                "--enable-automation",
+                "--disable-gpu",
             ],
         },
     }],
@@ -64,7 +73,7 @@ export const config: Options.Testrunner = {
         snippets: true,
         source: true,
         strict: false,
-        tagExpression: '@automation-exercise',
+        tagExpression: '',
         timeout: 60000,
         ignoreUndefinedDefinitions: true
     },

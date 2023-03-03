@@ -1,0 +1,16 @@
+{
+    "timers": {
+        "short": 1000,
+        "medium": 2000,
+        "long": 3000
+    },
+    "assertionTexts": {
+        "enterAccountInformationMessage": "ENTER ACCOUNT INFORMATION",
+        "accountCreatedMessage": "ACCOUNT CREATED!",
+        "accountDeletedMessage": "ACCOUNT DELETED!",
+        "loginToYourAccountMessage": "Login to your account",
+        "newUserSignupMessage": "New User Signup!",
+        "signupEmailAlreadyExistMessage": "Email Address already exist!",
+        "loginEmailPasswordIncorrectMessage": "Your email or password is incorrect!"
+    }
+}

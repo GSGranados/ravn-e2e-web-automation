@@ -1,7 +1,7 @@
 import Page from "../Page.js";
 import reporter from "../../helper/reporter.js";
 import { assert, expect } from "chai";
-
+import constants from '../../../data/constants.json' assert {type: "json"};
 class SignupPage extends Page {
     constructor() {
         super();
@@ -33,13 +33,15 @@ class SignupPage extends Page {
 
 
     /**
-     * @function verifyEnterAccountInformation It makes a Chai assertion to verify the Existence of the Enter Account information Message
+     * @function verifyEnterAccountInformationMessage It makes a Chai assertion to verify the Existence of the Enter Account information Message
      * @param testId For Allure Reporting purposes
      */
-    async verifyEnterAccountInformation(testId: string): Promise<void> {
+    async verifyEnterAccountInformationMessage(testId: string): Promise<void> {
         const reportingMessage = "Enter Account Information";
         try {
+            const enterAccountInformationMessage = await (await this.signupEnterAccountInformationMessage).getText();
             assert.exists(await this.signupEnterAccountInformationMessage, this.assertionErrorMessage);
+            expect(enterAccountInformationMessage).to.be.eq(constants.assertionTexts.enterAccountInformationMessage);
             reporter.addStep(testId, 'info', reportingMessage);
         } catch (error) {
             error.message = `${reportingMessage} - ${error.message}`;

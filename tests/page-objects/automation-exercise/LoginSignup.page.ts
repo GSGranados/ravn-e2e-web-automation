@@ -1,6 +1,7 @@
 import Page from "../Page.js";
 import reporter from "../../helper/reporter.js";
-import { assert } from "chai";
+import { assert, expect } from "chai";
+import constants from '../../../data/constants.json' assert {type: "json"};
 class LoginSingupPage extends Page {
     constructor() {
         super();
@@ -15,7 +16,8 @@ class LoginSingupPage extends Page {
     get loginEmailInputField() { return $('.login-form input[data-qa="login-email"]') }
     get loginPasswordInputField() { return $('.login-form input[data-qa="login-password"]') }
     get loginSubmitButton() { return $('.login-form button[data-qa="login-button"]') }
-
+    get signupEmailAlreadyExistMessage() { return $('.signup-form p') }
+    get loginEmailPasswordIncorrectMessage() { return $('.login-form p') }
     /**
      * @function verifyNewUserSignupMessage It makes a Chai assertion to validate the existence of the New User Signup Message
      * @param testId For Allure reporting purposes
@@ -23,7 +25,9 @@ class LoginSingupPage extends Page {
     async verifyNewUserSignupMessage(testId: string): Promise<void> {
         const reportingMessage = "New User signup message verified";
         try {
+            const newUserSignUpMessage = await (await this.newUserSignupMessage).getText();
             assert.exists(await this.newUserSignupMessage, this.assertionErrorMessage);
+            expect(newUserSignUpMessage).to.be.eq(constants.assertionTexts.newUserSignupMessage);
             reporter.addStep(testId, 'info', reportingMessage);
         } catch (error) {
             error.message = `${reportingMessage} - ${error.message}`
@@ -90,7 +94,9 @@ class LoginSingupPage extends Page {
     async verifyLoginToAccountMessage(testId: string): Promise<void> {
         const reportingMessage = "Login To Account Message verified";
         try {
+            const loginToYourAccountMessage = await (await this.loginToAccountMessage).getText();
             assert.exists(await this.loginToAccountMessage, this.assertionErrorMessage);
+            expect(loginToYourAccountMessage).to.be.eq(constants.assertionTexts.loginToYourAccountMessage);
             reporter.addStep(testId, 'info', reportingMessage);
         } catch (error) {
             error.message = `${reportingMessage} - ${error.message}`
@@ -141,6 +147,44 @@ class LoginSingupPage extends Page {
         const reportingMessage = `Login Submit Button Clicked`;
         try {
             await this.clickElement(await this.loginSubmitButton);
+            reporter.addStep(testId, 'info', reportingMessage);
+        } catch (error) {
+            error.message = `${reportingMessage} - ${error.message}`
+            reporter.addStep(testId, 'error', reportingMessage);
+            throw error
+        }
+    }
+
+    /**
+     * @function verifyEmailAlreadyExistMessage It makes a Chai assertion to verify the existence and content of the error message
+     * for an existing email
+     * @param testId For Allure Reporting purposes
+     */
+    async verifyEmailAlreadyExistMessage(testId: string): Promise<void> {
+        const reportingMessage = "Email Already Exist Message Verified";
+        try {
+            const signupEmailAlreadyExistMessage = await (await this.signupEmailAlreadyExistMessage).getText();
+            assert.exists(await this.signupEmailAlreadyExistMessage, this.assertionErrorMessage);
+            expect(signupEmailAlreadyExistMessage).to.be.eq(constants.assertionTexts.signupEmailAlreadyExistMessage);
+            reporter.addStep(testId, 'info', reportingMessage);
+        } catch (error) {
+            error.message = `${reportingMessage} - ${error.message}`
+            reporter.addStep(testId, 'error', reportingMessage);
+            throw error
+        }
+    }
+
+    /**
+     * @function verifyLoginEmailPasswordIncorrectMessage It makes a Chai assertion to verify the existence and content of the error message
+     * for invalid credentials
+     * @param testId For Allure Reporting purposes
+     */
+    async verifyLoginEmailPasswordIncorrectMessage(testId: string): Promise<void> {
+        const reportingMessage = "Login Incorrect Email / Password Message Verified";
+        try {
+            const loginEmailPasswordIncorrectMessage = await (await this.loginEmailPasswordIncorrectMessage).getText();
+            assert.exists(await this.loginEmailPasswordIncorrectMessage, this.assertionErrorMessage);
+            expect(loginEmailPasswordIncorrectMessage).to.be.eq(constants.assertionTexts.loginEmailPasswordIncorrectMessage);
             reporter.addStep(testId, 'info', reportingMessage);
         } catch (error) {
             error.message = `${reportingMessage} - ${error.message}`
