@@ -44,4 +44,9 @@ Create an `.env` file on the root folder and copy the HEADLESS_MODE variable to 
 
 - TRUE: It will run all test in the background.
 - FALSE: It will launch a Browser capability and run the E2E normally
+
+
+### Chromedriver - Not loading the capability
+
+If an error arises from the terminal, mentioning the `chromedriver` version does not support Chrome versions below X.X.X. this states the Chrome Browser got updated in the background. Just update the Dependency from the package.json with `npm i chromedriver@latest --save-dev` and re-run the tests again.
  
